@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MartianMonster</string>
+
+    <string name="sound_title_1st">1st</string>
+    <string name="sound_title_speed">SPEED</string>
+    <string name="sound_title_trip">TRIP</string>
+    <string name="sound_title_ufo">(ufo)</string>
+    <string name="sound_title_blast">BLAST</string>
+
 </resources>

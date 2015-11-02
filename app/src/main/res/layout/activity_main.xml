@@ -21,24 +21,24 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="1st"
                 android:id="@+id/button1"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="@string/sound_title_1st"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="SPEED"
                 android:id="@+id/button2"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="@string/sound_title_speed"/>
         </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/button3"
-            android:text="TRIP"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="@string/sound_title_trip"/>
 
 
         <LinearLayout
@@ -50,16 +50,16 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="(ufo)"
                 android:id="@+id/button4"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="@string/sound_title_ufo"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="BLAST"
                 android:id="@+id/button5"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="@string/sound_title_blast"/>
         </LinearLayout>
 
 </LinearLayout>
