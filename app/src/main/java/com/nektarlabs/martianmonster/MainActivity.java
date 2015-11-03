@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.button1)
-    public void playSound(View view) {
+    @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5 })
+    public void onSoundboardButtonClicked(View view) {
         stopPlaying();
         mMediaPlayer = MediaPlayer.create(this, R.raw.firstastronaut);
         mMediaPlayer.start();
