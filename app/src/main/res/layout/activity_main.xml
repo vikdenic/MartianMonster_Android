@@ -23,14 +23,23 @@
                 android:layout_height="match_parent"
                 android:id="@+id/button1"
                 android:layout_weight="1"
-                android:text="@string/sound_title_1st"/>
+                android:text="@string/sound_title_1st"
+                android:background="#00C853"
+                android:textColor="#FDE44A"
+                android:textSize="48sp"
+                android:fontFamily="sans-serif-medium"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/button2"
                 android:layout_weight="1"
-                android:text="@string/sound_title_speed"/>
+                android:text="@string/sound_title_speed"
+                android:background="#D50000"
+                android:textColor="#FDE44A"
+                android:textSize="48sp"
+                android:fontFamily="sans-serif-medium"/>
+
         </LinearLayout>
 
         <Button
@@ -38,8 +47,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/button3"
             android:layout_weight="1"
-            android:text="@string/sound_title_trip"/>
-
+            android:text="@string/sound_title_trip"
+            android:background="#212121"
+            android:textColor="#FDE44A"
+            android:textSize="48sp"
+            android:fontFamily="sans-serif-medium"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -52,14 +64,22 @@
                 android:layout_height="match_parent"
                 android:id="@+id/button4"
                 android:layout_weight="1"
-                android:text="@string/sound_title_ufo"/>
+                android:text="@string/sound_title_ufo"
+                android:background="#FF6D00"
+                android:textColor="#FDE44A"
+                android:textSize="48sp"
+                android:fontFamily="sans-serif-medium"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/button5"
                 android:layout_weight="1"
-                android:text="@string/sound_title_blast"/>
+                android:text="@string/sound_title_blast"
+                android:background="#6200EA"
+                android:textColor="#FDE44A"
+                android:textSize="48sp"
+                android:fontFamily="sans-serif-medium"/>
         </LinearLayout>
 
 </LinearLayout>
