@@ -11,7 +11,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MediaPlayer mMediaPlayer;
+    private MediaPlayer mMediaPlayer1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,17 +24,17 @@ public class MainActivity extends AppCompatActivity {
     @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5 })
     public void onSoundboardButtonClicked(View view) {
         int resid = residForButton(view);
-
         stopPlaying();
-        mMediaPlayer = MediaPlayer.create(this, resid);
-        mMediaPlayer.start();
+
+        mMediaPlayer1 = MediaPlayer.create(this, resid);
+        mMediaPlayer1.start();
     }
 
     private void stopPlaying() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer.stop();
-            mMediaPlayer.release();
-            mMediaPlayer = null;
+        if (mMediaPlayer1 != null) {
+            mMediaPlayer1.stop();
+            mMediaPlayer1.release();
+            mMediaPlayer1 = null;
         }
     }
 
