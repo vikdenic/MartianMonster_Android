@@ -1,5 +1,6 @@
 package com.nektarlabs.martianmonster;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        shareTo();
     }
 
     @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5 })
@@ -62,5 +65,15 @@ public class MainActivity extends AppCompatActivity {
                 return R.raw.firstastronaut;
         }
         return resid;
+    }
+
+    private void shareTo() {
+        String message = "♫ My spaceship just blasted off, via the Martian Monster App! http://onelink.to/mmapp";
+        Intent intent = new Intent(Intent.ACTION_SEND);
+
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+
+        startActivity(Intent.createChooser(intent, "Share To"));
     }
 }
