@@ -43,7 +43,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -55,9 +55,11 @@
                 android:id="@+id/shareImageView"
                 android:src="@mipmap/share"
                 android:clickable="true"
-                android:paddingTop="10dp"
-                android:paddingLeft="10dp"/>
-        </LinearLayout>
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:paddingRight="15dp"
+                android:paddingTop="15dp"/>
+        </RelativeLayout>
 
     </FrameLayout>
 
