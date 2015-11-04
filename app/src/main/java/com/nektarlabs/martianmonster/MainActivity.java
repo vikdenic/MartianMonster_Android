@@ -80,10 +80,17 @@ public class MainActivity extends AppCompatActivity {
     //endregion
     @OnClick(R.id.rocketImageView)
     public void onRocketButtonClicked(View view) {
-        stopPlaying(mMediaPlayerLoop1);
-        mMediaPlayerLoop1 = MediaPlayer.create(this, R.raw.martianmonsterloop);
-        mMediaPlayerLoop1.setLooping(true);
-        mMediaPlayerLoop1.start();
+        if (mMediaPlayerLoop1 == null) {
+            mMediaPlayerLoop1 = MediaPlayer.create(this, R.raw.martianmonsterloop);
+            mMediaPlayerLoop1.setLooping(true);
+            mMediaPlayerLoop1.start();
+        }
+        else if (mMediaPlayerLoop1.isPlaying()) {
+            mMediaPlayerLoop1.pause();
+        }
+        else {
+            mMediaPlayerLoop1.start();
+        }
     }
 
     //region Sharing
@@ -102,4 +109,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent, "Share To"));
     }
     //endregion
+
+
 }

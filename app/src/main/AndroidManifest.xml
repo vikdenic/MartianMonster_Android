@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
-        <activity android:name=".MainActivity" >
+        <activity android:name=".MainActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,7 +18,7 @@
         </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="0ab16672c93474a83c728078cb9b8991188bb3ca" />
+            android:value="0ab16672c93474a83c728078cb9b8991188bb3ca"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
