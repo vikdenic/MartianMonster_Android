@@ -9,63 +9,70 @@ import android.widget.Button;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.crashlytics.android.Crashlytics;
-import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity {
 
     private MediaPlayer mMediaPlayer1;
+    private MediaPlayer mMediaPlayer2;
+    private MediaPlayer mMediaPlayer3;
+    private MediaPlayer mMediaPlayer4;
+    private MediaPlayer mMediaPlayer5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
+//        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
     }
 
     @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5 })
-    public void onSoundboardButtonClicked(View view) {
-        int resid = residForButton(view);
-        stopPlaying();
-
-        mMediaPlayer1 = MediaPlayer.create(this, resid);
-        mMediaPlayer1.start();
+    public void onSoundboarsdButtonClicked(View view) {
+        playSoundForButton(view);
     }
 
-    private void stopPlaying() {
-        if (mMediaPlayer1 != null) {
-            mMediaPlayer1.stop();
-            mMediaPlayer1.release();
-            mMediaPlayer1 = null;
+    private void stopPlaying(MediaPlayer mediaPlayer) {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 
-    private int residForButton(View view) {
+    private void playSoundForButton(View view) {
         Button button = (Button) view;
         int resid;
 
         switch(button.getId()) {
             case R.id.button1:
-                resid = R.raw.firstastronaut;
+                stopPlaying(mMediaPlayer1);
+                mMediaPlayer1 = MediaPlayer.create(this, R.raw.firstastronaut);
+                mMediaPlayer1.start();
                 break;
             case R.id.button2:
-                resid = R.raw.incrediblespeed;
+                stopPlaying(mMediaPlayer2);
+                mMediaPlayer2 = MediaPlayer.create(this, R.raw.incrediblespeed);
+                mMediaPlayer2.start();
                 break;
             case R.id.button3:
-                resid = R.raw.tripisshort;
+                stopPlaying(mMediaPlayer3);
+                mMediaPlayer3 = MediaPlayer.create(this, R.raw.tripisshort);
+                mMediaPlayer3.start();
                 break;
             case R.id.button4:
-                resid = R.raw.ufo;
+                stopPlaying(mMediaPlayer4);
+                mMediaPlayer4 = MediaPlayer.create(this, R.raw.ufo);
+                mMediaPlayer4.start();
                 break;
             case R.id.button5:
-                resid = R.raw.blastoff;
+                stopPlaying(mMediaPlayer5);
+                mMediaPlayer5 = MediaPlayer.create(this, R.raw.blastoff);
+                mMediaPlayer5.start();
                 break;
             default:
-                return R.raw.firstastronaut;
+                break;
         }
-        return resid;
     }
 
     @OnClick(R.id.shareImageView)
