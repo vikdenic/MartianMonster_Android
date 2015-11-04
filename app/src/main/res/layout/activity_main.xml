@@ -7,10 +7,15 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:id="@+id/linearLayout"
             android:layout_weight="1">
 
@@ -38,7 +43,25 @@
 
         </LinearLayout>
 
-        <Button
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/shareImageView"
+                android:src="@mipmap/share"
+                android:clickable="true"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"/>
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/button3"
@@ -49,15 +72,10 @@
             android:textSize="48sp"
             android:fontFamily="sans-serif-medium"/>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <LinearLayout
+    <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1">
 
             <Button
@@ -80,8 +98,8 @@
                 android:background="#6200EA"
                 android:textColor="#FDE44A"
                 android:textSize="48sp"
-                android:fontFamily="sans-serif-medium"/>
+                android:fontFamily="sans-serif-medium"
+                />
         </LinearLayout>
-    </FrameLayout>
 
 </LinearLayout>

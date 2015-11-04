@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-
-//        shareTo();
     }
 
     @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5 })
@@ -65,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
                 return R.raw.firstastronaut;
         }
         return resid;
+    }
+
+    @OnClick(R.id.shareImageView)
+    public void onShareButtonClicked(View view) {
+        shareTo();
     }
 
     private void shareTo() {
