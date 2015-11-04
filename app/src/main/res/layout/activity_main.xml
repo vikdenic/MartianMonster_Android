@@ -58,7 +58,26 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:paddingRight="15dp"
-                android:paddingTop="15dp"/>
+                android:paddingTop="15dp"
+                android:adjustViewBounds="false"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rocketImageView"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:src="@mipmap/rocket"
+                android:paddingTop="15dp"
+                android:paddingLeft="15dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:layout_alignParentBottom="false"
+                android:clickable="true"
+                android:cropToPadding="false"
+                />
+
         </RelativeLayout>
 
     </FrameLayout>

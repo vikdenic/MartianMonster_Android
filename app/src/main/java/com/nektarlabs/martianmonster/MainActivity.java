@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mMediaPlayer4;
     private MediaPlayer mMediaPlayer5;
 
+    private MediaPlayer mMediaPlayerLoop1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    //region Soundboard
     @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5 })
     public void onSoundboarsdButtonClicked(View view) {
         playSoundForButton(view);
@@ -74,7 +77,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+    //endregion
+    @OnClick(R.id.rocketImageView)
+    public void onRocketButtonClicked(View view) {
+        stopPlaying(mMediaPlayerLoop1);
+        mMediaPlayerLoop1 = MediaPlayer.create(this, R.raw.martianmonsterloop);
+        mMediaPlayerLoop1.setLooping(true);
+        mMediaPlayerLoop1.start();
+    }
 
+    //region Sharing
     @OnClick(R.id.shareImageView)
     public void onShareButtonClicked(View view) {
         shareTo();
@@ -89,4 +101,5 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(Intent.createChooser(intent, "Share To"));
     }
+    //endregion
 }
