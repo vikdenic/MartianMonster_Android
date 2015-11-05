@@ -1,6 +1,7 @@
 package com.nektarlabs.martianmonster;
 
 import android.content.Intent;
+import android.graphics.Movie;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.crashlytics.android.Crashlytics;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Animation animScale;
 
+    private Movie mMovie;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +41,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+    }
+
+    private void gifStuff() {
+        InputStream stream = null;
+        try {
+            stream = getAssets().open("space.gif");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        GifMovieView view = new GifMovieView(this, stream);
     }
 
     //region Soundboard
