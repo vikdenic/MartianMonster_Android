@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
         rootLinearLayout.setBackground(gif);
         gif.setVisible(true, true);
+        gif.start();
     }
     //endregion
 }
