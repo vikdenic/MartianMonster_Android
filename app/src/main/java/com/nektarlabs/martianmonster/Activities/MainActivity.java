@@ -1,7 +1,7 @@
-package com.nektarlabs.martianmonster;
+package com.nektarlabs.martianmonster.Activities;
 
 import android.content.Intent;
-import android.graphics.Movie;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +10,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.crashlytics.android.Crashlytics;
+import com.nektarlabs.martianmonster.GIF.GifAnimationDrawable;
+import com.nektarlabs.martianmonster.R;
 
 import java.io.IOException;
-import java.io.InputStream;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.fabric.sdk.android.Fabric;
@@ -32,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Animation animScale;
 
-    private Movie mMovie;
+    GifAnimationDrawable gif;
+
+    @Bind(R.id.rootLinearLayout) LinearLayout rootLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,20 +46,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-    }
 
-    private void gifStuff() {
-        InputStream stream = null;
-        try {
-            stream = getAssets().open("space.gif");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        GifMovieView view = new GifMovieView(this, stream);
+        setGifAsBackground();
     }
 
     //region Soundboard
-    @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5 })
+    @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5})
     public void onSoundboarsdButtonClicked(View view) {
         playSoundForButton(view);
     }
@@ -71,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button) view;
         int resid;
 
-        switch(button.getId()) {
+        switch (button.getId()) {
             case R.id.button1:
                 stopPlaying(mMediaPlayer1);
                 mMediaPlayer1 = MediaPlayer.create(this, R.raw.firstastronaut);
@@ -101,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
     //endregion
     @OnClick(R.id.rocketImageView)
     public void onRocketImageViewClicked(View view) {
@@ -117,14 +115,12 @@ public class MainActivity extends AppCompatActivity {
             mMediaPlayerLoop1 = MediaPlayer.create(this, R.raw.martianmonsterloop);
             mMediaPlayerLoop1.setLooping(true);
             mMediaPlayerLoop1.start();
-        }
-        else if (mMediaPlayerLoop1.isPlaying()) {
+        } else if (mMediaPlayerLoop1.isPlaying()) {
             mMediaPlayerLoop1.pause();
 
             imageView.setImageResource(R.mipmap.rocketcircle);
             imageView.clearAnimation();
-        }
-        else {
+        } else {
             mMediaPlayerLoop1.start();
             imageView.setImageResource(R.mipmap.rocketcirclewhite);
             imageView.startAnimation(animScale);
@@ -145,6 +141,22 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_TEXT, message);
 
         startActivity(Intent.createChooser(intent, "Share To"));
+    }
+    //endregion
+
+    //region GIF
+    private void setGifAsBackground() {
+        try {
+            gif = new GifAnimationDrawable(getResources().openRawResource(R.raw.space));
+            gif.setOneShot(false);
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        rootLinearLayout.setBackground(gif);
+        gif.setVisible(true, true);
     }
     //endregion
 }
