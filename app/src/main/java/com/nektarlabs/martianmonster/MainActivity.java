@@ -5,6 +5,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mMediaPlayer5;
 
     private MediaPlayer mMediaPlayerLoop1;
+
+    private Animation animScale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,19 +90,28 @@ public class MainActivity extends AppCompatActivity {
     public void onRocketImageViewClicked(View view) {
         ImageView imageView = (ImageView) view;
 
+        imageView.clearAnimation();
+        animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
+        imageView.setAnimation(animScale);
+
         if (mMediaPlayerLoop1 == null) {
             imageView.setImageResource(R.mipmap.rocketcirclewhite);
+            imageView.startAnimation(animScale);
+
             mMediaPlayerLoop1 = MediaPlayer.create(this, R.raw.martianmonsterloop);
             mMediaPlayerLoop1.setLooping(true);
             mMediaPlayerLoop1.start();
         }
         else if (mMediaPlayerLoop1.isPlaying()) {
             mMediaPlayerLoop1.pause();
+
             imageView.setImageResource(R.mipmap.rocketcircle);
+            imageView.clearAnimation();
         }
         else {
             mMediaPlayerLoop1.start();
             imageView.setImageResource(R.mipmap.rocketcirclewhite);
+            imageView.startAnimation(animScale);
         }
     }
 
