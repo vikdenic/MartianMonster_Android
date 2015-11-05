@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -82,17 +83,22 @@ public class MainActivity extends AppCompatActivity {
     }
     //endregion
     @OnClick(R.id.rocketImageView)
-    public void onRocketButtonClicked(View view) {
+    public void onRocketImageViewClicked(View view) {
+        ImageView imageView = (ImageView) view;
+
         if (mMediaPlayerLoop1 == null) {
+            imageView.setImageResource(R.mipmap.rocketcirclewhite);
             mMediaPlayerLoop1 = MediaPlayer.create(this, R.raw.martianmonsterloop);
             mMediaPlayerLoop1.setLooping(true);
             mMediaPlayerLoop1.start();
         }
         else if (mMediaPlayerLoop1.isPlaying()) {
             mMediaPlayerLoop1.pause();
+            imageView.setImageResource(R.mipmap.rocketcircle);
         }
         else {
             mMediaPlayerLoop1.start();
+            imageView.setImageResource(R.mipmap.rocketcirclewhite);
         }
     }
 
