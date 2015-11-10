@@ -18,8 +18,11 @@ import io.fabric.sdk.android.Fabric;
  */
 public class MMApplication extends Application {
 
+    private boolean testing;
+
     @Override public void onCreate() {
         super.onCreate();
+        testing = true;
 
         Fabric.with(this, new Crashlytics());
 
@@ -29,20 +32,29 @@ public class MMApplication extends Application {
     }
 
     private void saveUserToParse() {
-        String uniqueString = UUID.randomUUID().toString().substring(0, 5);
+        if (ParseUser.getCurrentUser() == null) {
+            String uniqueString = UUID.randomUUID().toString().substring(0, 5);
 
-        ParseUser user = new ParseUser();
-        user.setUsername(uniqueString);
-        user.setPassword(uniqueString);
+            ParseUser user = new ParseUser();
 
-        user.signUpInBackground(new SignUpCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-
-                } else {
-
-                }
+            if (testing == false) {
+                user.setUsername(uniqueString);
+                user.setPassword(uniqueString);
             }
-        });
+            else {
+                user.setUsername("android_test_user");
+                user.setPassword("password");
+            }
+
+            user.signUpInBackground(new SignUpCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+
+                    } else {
+
+                    }
+                }
+            });
+        }
     }
 }
