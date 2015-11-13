@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        AdBuddiz.setPublisherKey("1f92e0f9-4876-4b63-a22c-4bc9b6928b2f");
+        AdBuddiz.setPublisherKey(getString(R.string.adbuddiz_publisher_key));
         AdBuddiz.cacheAds(this);
 
         Timer t = new Timer();
