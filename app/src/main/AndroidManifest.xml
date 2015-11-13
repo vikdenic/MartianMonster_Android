@@ -24,6 +24,10 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="0ab16672c93474a83c728078cb9b8991188bb3ca"/>
+
+        <activity android:name="com.purplebrain.adbuddiz.sdk.AdBuddizActivity"
+                  android:theme="@android:style/Theme.Translucent" />
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

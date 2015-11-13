@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,8 +15,11 @@ import android.widget.LinearLayout;
 
 import com.nektarlabs.martianmonster.GIF.GifAnimationDrawable;
 import com.nektarlabs.martianmonster.R;
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,6 +47,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        AdBuddiz.setPublisherKey("1f92e0f9-4876-4b63-a22c-4bc9b6928b2f");
+        AdBuddiz.cacheAds(this);
+
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(
+                new TimerTask()
+                {
+                    public void run()
+                    {
+                        showAd();
+                    }
+                },
+                10000,      // run first occurrence after 7 seconds
+                70000); // run every 70 seconds
 
         setGifAsBackground();
     }
@@ -127,7 +146,13 @@ public class MainActivity extends AppCompatActivity {
     //region Sharing
     @OnClick(R.id.shareImageView)
     public void onShareButtonClicked(View view) {
-        shareTo();
+//        shareTo();
+        if (AdBuddiz.isReadyToShowAd(this)) { // this = current Activity
+            AdBuddiz.showAd(this); // showAd will always display an ad
+        } else {
+            // use another ad network
+            Log.i("AdBuddiz:", "SHE WASNT READY!!!");
+        }
     }
 
     private void shareTo() {
@@ -157,4 +182,13 @@ public class MainActivity extends AppCompatActivity {
         gif.start();
     }
     //endregion
+
+    private void showAd() {
+        if (AdBuddiz.isReadyToShowAd(this)) { // this = current Activity
+            AdBuddiz.showAd(this); // showAd will always display an ad
+        } else {
+            // use another ad network
+            Log.i("AdBuddiz:", "SHE WASNT READY!!!");
+        }
+    }
 }
