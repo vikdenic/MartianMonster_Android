@@ -146,13 +146,7 @@ public class MainActivity extends AppCompatActivity {
     //region Sharing
     @OnClick(R.id.shareImageView)
     public void onShareButtonClicked(View view) {
-//        shareTo();
-        if (AdBuddiz.isReadyToShowAd(this)) { // this = current Activity
-            AdBuddiz.showAd(this); // showAd will always display an ad
-        } else {
-            // use another ad network
-            Log.i("AdBuddiz:", "SHE WASNT READY!!!");
-        }
+        shareTo();
     }
 
     private void shareTo() {
@@ -188,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             AdBuddiz.showAd(this); // showAd will always display an ad
         } else {
             // use another ad network
-            Log.i("AdBuddiz:", "SHE WASNT READY!!!");
+            Log.i("AdBuddiz:", "Ad not ready...");
         }
     }
 }
