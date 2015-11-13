@@ -22,7 +22,7 @@ public class MMApplication extends Application {
 
     @Override public void onCreate() {
         super.onCreate();
-        testing = true;
+        testing = false;
 
         Fabric.with(this, new Crashlytics());
 
