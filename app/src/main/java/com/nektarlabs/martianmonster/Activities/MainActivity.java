@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             AdBuddiz.showAd(this); // showAd will always display an ad
         } else {
             // use another ad network
-            Log.i("AdBuddiz:", "Ad not ready...");
+//            Log.i("AdBuddiz:", "Ad not ready...");
         }
     }
 }

@@ -36,3 +36,9 @@
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
+
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+
+-dontwarn com.parse.**
+-keep class com.parse.** { *; }
