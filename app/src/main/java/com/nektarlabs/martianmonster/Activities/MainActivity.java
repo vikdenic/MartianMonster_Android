@@ -2,6 +2,7 @@ package com.nektarlabs.martianmonster.Activities;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +17,12 @@ import android.widget.LinearLayout;
 import com.nektarlabs.martianmonster.GIF.GifAnimationDrawable;
 import com.nektarlabs.martianmonster.R;
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
+import com.purplebrain.adbuddiz.sdk.AdBuddizDelegate;
+import com.purplebrain.adbuddiz.sdk.AdBuddizError;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.rootLinearLayout) LinearLayout rootLinearLayout;
 
+    @Bind({ R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5})
+    List<Button> soundButtons;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,20 +57,14 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         AdBuddiz.setPublisherKey(getString(R.string.adbuddiz_publisher_key));
+        setUpAdBUddizDelegate();
         AdBuddiz.cacheAds(this);
 
-        Timer t = new Timer();
-        t.scheduleAtFixedRate(
-                new TimerTask()
-                {
-                    public void run()
-                    {
-                        showAd();
-                    }
-                },
-                10000,      // run first occurrence after 7 seconds
-                70000); // run every 70 seconds
+        Random generator = new Random();
+        int i = generator.nextInt(1) + 1;
+        setUpAdTimer(i * 7000);
 
+        setFontForOlderButtons();
         setGifAsBackground();
     }
 
@@ -177,12 +179,83 @@ public class MainActivity extends AppCompatActivity {
     }
     //endregion
 
+    //region AdBuddiz
+    private void setUpAdTimer(long delay) {
+        Timer t = new Timer();
+//        t.scheduleAtFixedRate(
+//                new TimerTask() {
+//                    public void run() {
+//                        showAd();
+//                    }
+//                },
+//                10000,      // run first occurrence after 7 seconds
+//                70000); // run every 70 seconds
+
+        t.schedule(
+                new TimerTask() {
+                    public void run() {
+                        showAd();
+                    }
+                },
+                delay);
+    }
+
     private void showAd() {
         if (AdBuddiz.isReadyToShowAd(this)) { // this = current Activity
             AdBuddiz.showAd(this); // showAd will always display an ad
         } else {
             // use another ad network
-//            Log.i("AdBuddiz:", "Ad not ready...");
+            Log.i("AdBuddiz:", "Ad not ready...");
         }
     }
+
+    private void setUpAdBUddizDelegate() {
+        AdBuddiz.setDelegate(new AdBuddizDelegate() {
+
+            @Override
+            public void didCacheAd() {
+                Log.i("AdBuddizDelegate: ", "didCacheAd()");
+            }
+
+            @Override
+            public void didClick() {
+                Log.i("AdBuddizDelegate: ", "didClickAd()");
+            }
+
+            @Override
+            public void didFailToShowAd(AdBuddizError arg0) {
+                Log.i("AdBuddizDelegate: ", "didFailToShowAd()");
+            }
+
+            @Override
+            public void didHideAd() {
+                Log.i("AdBuddizDelegate: ", "didHideAd()");
+//                setUpAdTimer(65000);
+            }
+
+            @Override
+            public void didShowAd() {
+                Log.i("AdBuddizDelegate: ", "didShowAd()");
+            }});
+    }
+    //endregion
+
+    //region Fonts
+    private void setFontForOlderButtons() {
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+//        if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP){
+            // Do something for lollipop and above versions
+//        } else{
+        Typeface customTypeFace = Typeface.createFromAsset(getAssets(), "fonts/orbitronmedium.ttf");
+            for (View view : soundButtons)
+            {
+                if (view instanceof Button)
+                {
+                    Button button = (Button) view;
+                    button.setTypeface(customTypeFace);
+                }
+            }
+//        }
+    }
+    //endregion
 }
