@@ -22,9 +22,11 @@ public class MMApplication extends Application {
 
     @Override public void onCreate() {
         super.onCreate();
-        testing = false;
+        testing = true;
 
-        Fabric.with(this, new Crashlytics());
+        if (testing == false) {
+            Fabric.with(this, new Crashlytics());
+        }
 
         Parse.initialize(this, getString(R.string.parse_application_id), getString(R.string.parse_client_secret));
 
