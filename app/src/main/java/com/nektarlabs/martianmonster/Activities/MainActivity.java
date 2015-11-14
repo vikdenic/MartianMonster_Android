@@ -62,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
         setUpAdBUddizDelegate();
         AdBuddiz.cacheAds(this);
 
-        Random generator = new Random();
-        int i = generator.nextInt(1) + 1;
-        setUpAdTimer(i * 7000);
+        setUpAdTimer(randomDelay());
 
         setFontForOlderButtons();
         setGifAsBackground();
@@ -204,6 +202,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 },
                 delay);
+    }
+
+    private long randomDelay() {
+        long[] delays = {8000, 11000, 13000};
+        Random generator = new Random();
+        return generator.nextInt(3);
     }
 
     private void showAd() {
