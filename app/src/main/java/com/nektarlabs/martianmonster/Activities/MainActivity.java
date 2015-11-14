@@ -73,12 +73,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i("ONSTART: ", "just got called");
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (didShowAd == false) {
@@ -91,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        if (mMediaPlayer1 != null) {
-            if (mMediaPlayer1.isPlaying()) {
+        if (mMediaPlayerLoop1 != null) {
+            if (mMediaPlayerLoop1.isPlaying()) {
                 mMediaPlayerLoop1.pause();
                 rocketImageView.setImageResource(R.mipmap.rocketcircle);
                 rocketImageView.clearAnimation();
@@ -110,12 +104,6 @@ public class MainActivity extends AppCompatActivity {
                 adTimer = null;
             }
         Log.i("ONSTOP: ", "just got called");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("ONDESTROY: ", "just got called");
     }
 
     @Override
