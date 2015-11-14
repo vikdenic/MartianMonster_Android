@@ -70,8 +70,7 @@ public class MainActivity extends AppCompatActivity {
         AdBuddiz.cacheAds(this);
 
         moPubView = (MoPubView) findViewById(R.id.mopub_sample_ad);
-        // TODO: Replace this test id with your personal ad unit id
-        moPubView.setAdUnitId("d4a0aba637d64a9f9a05a575fa757ac2");
+        moPubView.setAdUnitId(getString(R.string.mopub_banner_unit_id));
         moPubView.loadAd();
 
         setFontForOlderButtons();
