@@ -192,14 +192,6 @@ public class MainActivity extends AppCompatActivity {
     //region AdBuddiz
     private void setUpAdTimer(long delay) {
         Timer t = new Timer();
-//        t.scheduleAtFixedRate(
-//                new TimerTask() {
-//                    public void run() {
-//                        showAd();
-//                    }
-//                },
-//                10000,      // run first occurrence after 7 seconds
-//                70000); // run every 70 seconds
 
         t.schedule(
                 new TimerTask() {
@@ -253,9 +245,7 @@ public class MainActivity extends AppCompatActivity {
     //region Fonts
     private void setFontForOlderButtons() {
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-//        if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP){
-            // Do something for lollipop and above versions
-//        } else{
+//        if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP){}
         Typeface customTypeFace = Typeface.createFromAsset(getAssets(), "fonts/orbitronmedium.ttf");
             for (View view : soundButtons)
             {
@@ -265,7 +255,6 @@ public class MainActivity extends AppCompatActivity {
                     button.setTypeface(customTypeFace);
                 }
             }
-//        }
     }
     //endregion
 }
