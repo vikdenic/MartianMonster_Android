@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("ONRESUME, ", "didShowAd: " + didShowAd);
+
         if (didShowAd == false) {
             setUpAdTimer(randomDelay());
         }
@@ -104,21 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 adTimer = null;
             }
         Log.i("ONSTOP: ", "just got called");
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        outState.putBoolean(KEY_AD_SHOWED, didShowAd);
-        Log.i("ONSAVE INSTANCESTATE: ", "just got called");
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        didShowAd = savedInstanceState.getBoolean(KEY_AD_SHOWED);
-        Log.i("ONRESTORE INSTANCESTATE: ", "just got called");
     }
 
     //region Soundboard
