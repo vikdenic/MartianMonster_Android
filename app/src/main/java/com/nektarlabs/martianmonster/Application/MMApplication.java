@@ -3,6 +3,7 @@ package com.nektarlabs.martianmonster.Application;
 import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
+import com.mopub.common.MoPub;
 import com.nektarlabs.martianmonster.R;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -25,7 +26,7 @@ public class MMApplication extends Application {
         testing = true;
 
         if (testing == false) {
-            Fabric.with(this, new Crashlytics());
+            Fabric.with(this, new Crashlytics(), new MoPub());
         }
 
         Parse.initialize(this, getString(R.string.parse_application_id), getString(R.string.parse_client_secret));

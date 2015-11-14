@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.mopub.mobileads.MoPubView;
 import com.nektarlabs.martianmonster.GIF.GifAnimationDrawable;
 import com.nektarlabs.martianmonster.R;
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private Timer adTimer;
     private boolean didShowAd = false;
 
+    private MoPubView moPubView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         AdBuddiz.setPublisherKey(getString(R.string.adbuddiz_publisher_key));
         setUpAdBUddizDelegate();
         AdBuddiz.cacheAds(this);
+
+        moPubView = (MoPubView) findViewById(R.id.mopub_sample_ad);
+        // TODO: Replace this test id with your personal ad unit id
+        moPubView.setAdUnitId("d4a0aba637d64a9f9a05a575fa757ac2");
+        moPubView.loadAd();
 
         setFontForOlderButtons();
         setGifAsBackground();
@@ -78,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i("ONRESUME, ", "didShowAd: " + didShowAd);
 
         if (didShowAd == false) {
-            setUpAdTimer(randomDelay());
+//            setUpAdTimer(randomDelay());
         }
         Log.i("ONRESUME: ", "just got called");
     }
@@ -106,6 +113,12 @@ public class MainActivity extends AppCompatActivity {
                 adTimer = null;
             }
         Log.i("ONSTOP: ", "just got called");
+    }
+
+    @Override
+    protected void onDestroy() {
+        moPubView.destroy();
+        super.onDestroy();
     }
 
     //region Soundboard

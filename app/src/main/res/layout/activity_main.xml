@@ -96,11 +96,15 @@
             android:textSize="42sp"
             android:fontFamily="sans-serif-medium"/>
 
-    <LinearLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_height="match_parent">
 
             <Button
                 android:layout_width="match_parent"
@@ -124,5 +128,20 @@
                 android:textSize="42sp"
                 android:fontFamily="sans-serif-medium"/>
         </LinearLayout>
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom">
+
+            <com.mopub.mobileads.MoPubView
+                android:id="@+id/mopub_sample_ad"
+                android:layout_alignParentBottom="true"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"/>
+
+        </RelativeLayout>
+    </FrameLayout>
 
 </LinearLayout>
