@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     @Bind({ R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5})
     List<Button> soundButtons;
 
+    @Bind(R.id.rocketImageView) ImageView rocketImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,15 @@ public class MainActivity extends AppCompatActivity {
 
         setFontForOlderButtons();
         setGifAsBackground();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        mMediaPlayerLoop1.pause();
+        rocketImageView.setImageResource(R.mipmap.rocketcircle);
+        rocketImageView.clearAnimation();
     }
 
     //region Soundboard
@@ -135,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
             mMediaPlayerLoop1.start();
         } else if (mMediaPlayerLoop1.isPlaying()) {
             mMediaPlayerLoop1.pause();
-
             imageView.setImageResource(R.mipmap.rocketcircle);
             imageView.clearAnimation();
         } else {
