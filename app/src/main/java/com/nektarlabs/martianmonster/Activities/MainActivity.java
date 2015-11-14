@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String KEY_AD_SHOWED = "KEY_AD_SHOWED";
     private MediaPlayer mMediaPlayer1;
     private MediaPlayer mMediaPlayer2;
     private MediaPlayer mMediaPlayer3;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Animation animScale;
 
-    GifAnimationDrawable gif;
+    private GifAnimationDrawable gif;
 
     @Bind(R.id.rootLinearLayout) LinearLayout rootLinearLayout;
 
@@ -50,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
     List<Button> soundButtons;
 
     @Bind(R.id.rocketImageView) ImageView rocketImageView;
+
+    private Timer adTimer;
+    private boolean didShowAd = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +67,24 @@ public class MainActivity extends AppCompatActivity {
         setUpAdBUddizDelegate();
         AdBuddiz.cacheAds(this);
 
-        setUpAdTimer(randomDelay());
-
         setFontForOlderButtons();
         setGifAsBackground();
+        Log.i("ONCREATE: ", "just got called");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("ONSTART: ", "just got called");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (didShowAd == false) {
+            setUpAdTimer(randomDelay());
+        }
+        Log.i("ONRESUME: ", "just got called");
     }
 
     @Override
@@ -79,6 +98,39 @@ public class MainActivity extends AppCompatActivity {
                 rocketImageView.clearAnimation();
             }
         }
+        Log.i("ONPAUSE: ", "just got called");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+            if(adTimer != null) {
+                adTimer.cancel();
+                adTimer = null;
+            }
+        Log.i("ONSTOP: ", "just got called");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("ONDESTROY: ", "just got called");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putBoolean(KEY_AD_SHOWED, didShowAd);
+        Log.i("ONSAVE INSTANCESTATE: ", "just got called");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        didShowAd = savedInstanceState.getBoolean(KEY_AD_SHOWED);
+        Log.i("ONRESTORE INSTANCESTATE: ", "just got called");
     }
 
     //region Soundboard
@@ -193,9 +245,9 @@ public class MainActivity extends AppCompatActivity {
 
     //region AdBuddiz
     private void setUpAdTimer(long delay) {
-        Timer t = new Timer();
+        adTimer = new Timer();
 
-        t.schedule(
+        adTimer.schedule(
                 new TimerTask() {
                     public void run() {
                         showAd();
@@ -207,7 +259,8 @@ public class MainActivity extends AppCompatActivity {
     private long randomDelay() {
         long[] delays = {8000, 11000, 13000};
         Random generator = new Random();
-        return generator.nextInt(3);
+        int i = generator.nextInt(3);
+        return delays[i];
     }
 
     private void showAd() {
@@ -245,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void didShowAd() {
+                didShowAd = true;
                 Log.i("AdBuddizDelegate: ", "didShowAd()");
             }});
     }
