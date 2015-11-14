@@ -74,9 +74,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        mMediaPlayerLoop1.pause();
-        rocketImageView.setImageResource(R.mipmap.rocketcircle);
-        rocketImageView.clearAnimation();
+        if (mMediaPlayer1 != null) {
+            if (mMediaPlayer1.isPlaying()) {
+                mMediaPlayerLoop1.pause();
+                rocketImageView.setImageResource(R.mipmap.rocketcircle);
+                rocketImageView.clearAnimation();
+            }
+        }
     }
 
     //region Soundboard
