@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.mopub.mobileads.MoPubErrorCode;
+import com.mopub.mobileads.MoPubInterstitial;
 import com.mopub.mobileads.MoPubView;
 import com.nektarlabs.martianmonster.GIF.GifAnimationDrawable;
 import com.nektarlabs.martianmonster.R;
@@ -31,7 +33,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements MoPubInterstitial.InterstitialAdListener{
 
     private static final String KEY_AD_SHOWED = "KEY_AD_SHOWED";
     private MediaPlayer mMediaPlayer1;
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean didShowAd = false;
 
     private MoPubView moPubView;
+    private MoPubInterstitial interstitial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +73,13 @@ public class MainActivity extends AppCompatActivity {
         setUpAdBUddizDelegate();
         AdBuddiz.cacheAds(this);
 
-        moPubView = (MoPubView) findViewById(R.id.mopub_sample_ad);
-        moPubView.setAdUnitId(getString(R.string.mopub_banner_unit_id));
-        moPubView.loadAd();
+//        moPubView = (MoPubView) findViewById(R.id.mopub_sample_ad);
+//        moPubView.setAdUnitId(getString(R.string.mopub_banner_unit_id));
+//        moPubView.loadAd();
+
+        interstitial = new MoPubInterstitial(this, getString(R.string.mopub_fullscreen_unit_id));
+        interstitial.setInterstitialAdListener(this);
+        interstitial.load();
 
         setFontForOlderButtons();
         setGifAsBackground();
@@ -117,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         moPubView.destroy();
+        interstitial.destroy();
         super.onDestroy();
     }
 
@@ -287,7 +296,8 @@ public class MainActivity extends AppCompatActivity {
             public void didShowAd() {
                 didShowAd = true;
                 Log.i("AdBuddizDelegate: ", "didShowAd()");
-            }});
+            }
+        });
     }
     //endregion
 
@@ -306,4 +316,35 @@ public class MainActivity extends AppCompatActivity {
             }
     }
     //endregion
+
+    // InterstitialAdListener methods
+    @Override
+    public void onInterstitialLoaded(MoPubInterstitial interstitial) {
+        // This sample automatically shows the ad as soon as it's loaded, but
+        // you can move this show call to a time more appropriate for your app.
+        if (interstitial.isReady()) {
+            interstitial.show();
+        }
+    }
+
+    //region MoPub
+    @Override
+    public void onInterstitialFailed(MoPubInterstitial interstitial, MoPubErrorCode errorCode) {
+        Log.d("MoPub", "Interstitial load failed: " + errorCode);
+        interstitial.load();
+    }
+
+    @Override
+    public void onInterstitialShown(MoPubInterstitial interstitial) {
+    }
+
+    @Override
+    public void onInterstitialClicked(MoPubInterstitial interstitial) {
+    }
+
+    @Override
+    public void onInterstitialDismissed(MoPubInterstitial interstitial) {
+    }
+    //endregion
+
 }
