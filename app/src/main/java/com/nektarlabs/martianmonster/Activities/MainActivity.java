@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        moPubView.destroy();
         interstitial.destroy();
         super.onDestroy();
     }
