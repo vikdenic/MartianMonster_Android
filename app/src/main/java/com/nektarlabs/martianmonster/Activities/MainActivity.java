@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity
     private MediaPlayer mMediaPlayer5;
 
     private MediaPlayer mMediaPlayerLoop1;
+    private MediaPlayer mMediaPlayerLoop2;
+    private MediaPlayer mMediaPlayerLoop3;
 
     private Animation animScale;
 
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity
     List<Button> soundButtons;
 
     @Bind(R.id.rocketImageView) ImageView rocketImageView;
+    @Bind(R.id.catImageView) ImageView catImageView;
+    @Bind(R.id.ghostImageView) ImageView ghostImageView;
 
     private Timer adTimer;
     private boolean didShowAd = false;
@@ -72,10 +76,6 @@ public class MainActivity extends AppCompatActivity
         AdBuddiz.setPublisherKey(getString(R.string.adbuddiz_publisher_key));
         setUpAdBUddizDelegate();
         AdBuddiz.cacheAds(this);
-
-//        moPubView = (MoPubView) findViewById(R.id.mopub_sample_ad);
-//        moPubView.setAdUnitId(getString(R.string.mopub_banner_unit_id));
-//        moPubView.loadAd();
 
         interstitial = new MoPubInterstitial(this, getString(R.string.mopub_fullscreen_unit_id));
         interstitial.setInterstitialAdListener(this);
@@ -101,13 +101,7 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
 
-        if (mMediaPlayerLoop1 != null) {
-            if (mMediaPlayerLoop1.isPlaying()) {
-                mMediaPlayerLoop1.pause();
-                rocketImageView.setImageResource(R.mipmap.rocketcircle);
-                rocketImageView.clearAnimation();
-            }
-        }
+        clearOtherLoops();
         Log.i("ONPAUSE: ", "just got called");
     }
 
@@ -177,9 +171,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //endregion
+
+    //region Looped Background Tracks
     @OnClick(R.id.rocketImageView)
     public void onRocketImageViewClicked(View view) {
+        clearOtherLoops();
         ImageView imageView = (ImageView) view;
 
         imageView.clearAnimation();
@@ -203,6 +199,85 @@ public class MainActivity extends AppCompatActivity
             imageView.startAnimation(animScale);
         }
     }
+
+    @OnClick(R.id.catImageView)
+    public void onCatImageViewClicked(View view) {
+        clearOtherLoops();
+        ImageView imageView = (ImageView) view;
+
+        imageView.clearAnimation();
+        animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
+        imageView.setAnimation(animScale);
+
+        if (mMediaPlayerLoop2 == null) {
+            imageView.setImageResource(R.mipmap.catcirclewhite);
+            imageView.startAnimation(animScale);
+
+            mMediaPlayerLoop2 = MediaPlayer.create(this, R.raw.petcatloop);
+            mMediaPlayerLoop2.setLooping(true);
+            mMediaPlayerLoop2.start();
+        } else if (mMediaPlayerLoop2.isPlaying()) {
+            mMediaPlayerLoop2.pause();
+            imageView.setImageResource(R.mipmap.catcircle);
+            imageView.clearAnimation();
+        } else {
+            mMediaPlayerLoop2.start();
+            imageView.setImageResource(R.mipmap.catcirclewhite);
+            imageView.startAnimation(animScale);
+        }
+    }
+
+    @OnClick(R.id.ghostImageView)
+    public void onGhostImageViewClicked(View view) {
+        clearOtherLoops();
+        ImageView imageView = (ImageView) view;
+
+        imageView.clearAnimation();
+        animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
+        imageView.setAnimation(animScale);
+
+        if (mMediaPlayerLoop3 == null) {
+            imageView.setImageResource(R.mipmap.ghostcirclewhite);
+            imageView.startAnimation(animScale);
+
+            mMediaPlayerLoop3 = MediaPlayer.create(this, R.raw.ghostloop);
+            mMediaPlayerLoop3.setLooping(true);
+            mMediaPlayerLoop3.start();
+        } else if (mMediaPlayerLoop3.isPlaying()) {
+            mMediaPlayerLoop3.pause();
+            imageView.setImageResource(R.mipmap.ghostcircle);
+            imageView.clearAnimation();
+        } else {
+            mMediaPlayerLoop3.start();
+            imageView.setImageResource(R.mipmap.ghostcirclewhite);
+            imageView.startAnimation(animScale);
+        }
+    }
+
+    private void clearOtherLoops() {
+        if (mMediaPlayerLoop1 != null) {
+            if (mMediaPlayerLoop1.isPlaying()) {
+                mMediaPlayerLoop1.pause();
+                rocketImageView.setImageResource(R.mipmap.rocketcircle);
+                rocketImageView.clearAnimation();
+            }
+        }
+        if (mMediaPlayerLoop2 != null) {
+            if (mMediaPlayerLoop2.isPlaying()) {
+                mMediaPlayerLoop2.pause();
+                catImageView.setImageResource(R.mipmap.catcircle);
+                catImageView.clearAnimation();
+            }
+        }
+        if (mMediaPlayerLoop3 != null) {
+            if (mMediaPlayerLoop3.isPlaying()) {
+                mMediaPlayerLoop3.pause();
+                ghostImageView.setImageResource(R.mipmap.ghostcircle);
+                ghostImageView.clearAnimation();
+            }
+        }
+    }
+    //endregion
 
     //region Sharing
     @OnClick(R.id.shareImageView)
