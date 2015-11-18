@@ -1,6 +1,8 @@
 package com.nektarlabs.martianmonster.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -28,6 +30,11 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity
         implements MoPubInterstitial.InterstitialAdListener{
+
+    private static final String PREFS_FILE = "com.nektarlabs.martianmonster.preferences";
+    private static final String KEY_FIRST_TIME = "key_first_time";
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
 
     private MediaPlayer mMediaPlayer1;
     private MediaPlayer mMediaPlayer2;
@@ -62,9 +69,11 @@ public class MainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        interstitial = new MoPubInterstitial(this, getString(R.string.mopub_fullscreen_unit_id));
-        interstitial.setInterstitialAdListener(this);
-        interstitial.load();
+        if (hasOpenedAppBefore() == true) {
+            interstitial = new MoPubInterstitial(this, getString(R.string.mopub_fullscreen_unit_id));
+            interstitial.setInterstitialAdListener(this);
+            interstitial.load();
+        }
 
         setFontForButtons();
         setGifAsBackground();
@@ -337,4 +346,23 @@ public class MainActivity extends AppCompatActivity
     }
     //endregion
 
+    private boolean hasOpenedAppBefore() {
+        mSharedPreferences = getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
+        mEditor = mSharedPreferences.edit();
+
+//        mEditor.clear();
+//        mEditor.apply();
+
+        boolean openedBefore = mSharedPreferences.getBoolean(KEY_FIRST_TIME, false);
+
+        if (openedBefore == false) {
+            Log.d("HasOpenedApp: ", openedBefore + "");
+            mEditor.putBoolean(KEY_FIRST_TIME, true).apply();
+            return false;
+        }
+        else {
+            Log.d("HasOpenedApp: ", openedBefore + "");
+            return true;
+        }
+    }
 }
