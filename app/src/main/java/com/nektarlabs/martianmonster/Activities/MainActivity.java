@@ -16,18 +16,12 @@ import android.widget.LinearLayout;
 
 import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubInterstitial;
-import com.mopub.mobileads.MoPubView;
 import com.nektarlabs.martianmonster.GIF.GifAnimationDrawable;
 import com.nektarlabs.martianmonster.R;
-import com.purplebrain.adbuddiz.sdk.AdBuddiz;
-import com.purplebrain.adbuddiz.sdk.AdBuddizDelegate;
-import com.purplebrain.adbuddiz.sdk.AdBuddizError;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,7 +30,6 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity
         implements MoPubInterstitial.InterstitialAdListener{
 
-    private static final String KEY_AD_SHOWED = "KEY_AD_SHOWED";
     private MediaPlayer mMediaPlayer1;
     private MediaPlayer mMediaPlayer2;
     private MediaPlayer mMediaPlayer3;
@@ -63,9 +56,9 @@ public class MainActivity extends AppCompatActivity
     private Timer adTimer;
     private boolean didShowAd = false;
 
-    private MoPubView moPubView;
     private MoPubInterstitial interstitial;
 
+    //region Activity Lifecycle
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,13 +66,9 @@ public class MainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        AdBuddiz.setPublisherKey(getString(R.string.adbuddiz_publisher_key));
-        setUpAdBUddizDelegate();
-        AdBuddiz.cacheAds(this);
-
         interstitial = new MoPubInterstitial(this, getString(R.string.mopub_fullscreen_unit_id));
         interstitial.setInterstitialAdListener(this);
-//        interstitial.load();
+        interstitial.load();
 
         setFontForOlderButtons();
         setGifAsBackground();
@@ -92,7 +81,6 @@ public class MainActivity extends AppCompatActivity
         Log.i("ONRESUME, ", "didShowAd: " + didShowAd);
 
         if (didShowAd == false) {
-//            setUpAdTimer(randomDelay());
         }
         Log.i("ONRESUME: ", "just got called");
     }
@@ -121,6 +109,7 @@ public class MainActivity extends AppCompatActivity
         interstitial.destroy();
         super.onDestroy();
     }
+    //endregion
 
     //region Soundboard
     @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5})
@@ -197,28 +186,20 @@ public class MainActivity extends AppCompatActivity
         animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
         imageView.setAnimation(animScale);
 
-        if (mediaPlayer != null) {
-            Log.d("MediaPlayerTest lp:", mediaPlayer.isLooping() + "");
-            Log.d("MediaPlayerTest pl:", mediaPlayer.isPlaying() + "");
-        }
-
         if (mediaPlayer == null) {
             stopAllBgSongs();
             imageView.setImageResource(imageWhiteId);
             imageView.startAnimation(animScale);
             setUpMediaPlayerForLoop(view);
-            Log.d("MediaPlayerTest:", "1");
         } else if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             imageView.setImageResource(imageId);
             imageView.clearAnimation();
-            Log.d("MediaPlayerTest:", "2");
         } else {
             stopAllBgSongs();
             mediaPlayer.start();
             imageView.setImageResource(imageWhiteId);
             imageView.startAnimation(animScale);
-            Log.d("MediaPlayerTest:", "3");
         }
     }
 
@@ -327,73 +308,9 @@ public class MainActivity extends AppCompatActivity
     }
     //endregion
 
-    //region AdBuddiz
-    private void setUpAdTimer(long delay) {
-        adTimer = new Timer();
-
-        adTimer.schedule(
-                new TimerTask() {
-                    public void run() {
-                        showAd();
-                    }
-                },
-                delay);
-    }
-
-    private long randomDelay() {
-        long[] delays = {8000, 11000, 13000};
-        Random generator = new Random();
-        int i = generator.nextInt(3);
-        return delays[i];
-    }
-
-    private void showAd() {
-        if (AdBuddiz.isReadyToShowAd(this)) { // this = current Activity
-            AdBuddiz.showAd(this); // showAd will always display an ad
-        } else {
-            // use another ad network
-            Log.i("AdBuddiz:", "Ad not ready...");
-        }
-    }
-
-    private void setUpAdBUddizDelegate() {
-        AdBuddiz.setDelegate(new AdBuddizDelegate() {
-
-            @Override
-            public void didCacheAd() {
-                Log.i("AdBuddizDelegate: ", "didCacheAd()");
-            }
-
-            @Override
-            public void didClick() {
-                Log.i("AdBuddizDelegate: ", "didClickAd()");
-            }
-
-            @Override
-            public void didFailToShowAd(AdBuddizError arg0) {
-                Log.i("AdBuddizDelegate: ", "didFailToShowAd()");
-            }
-
-            @Override
-            public void didHideAd() {
-                Log.i("AdBuddizDelegate: ", "didHideAd()");
-//                setUpAdTimer(65000);
-            }
-
-            @Override
-            public void didShowAd() {
-                didShowAd = true;
-                Log.i("AdBuddizDelegate: ", "didShowAd()");
-            }
-        });
-    }
-    //endregion
-
     //region Fonts
     private void setFontForOlderButtons() {
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-//        if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP){}
-        Typeface customTypeFace = Typeface.createFromAsset(getAssets(), "fonts/orbitronmedium.ttf");
+        Typeface customTypeFace = Typeface.createFromAsset(getAssets(), getString(R.string.FONT_ORBITRON));
             for (View view : soundButtons)
             {
                 if (view instanceof Button)
@@ -408,8 +325,6 @@ public class MainActivity extends AppCompatActivity
     // InterstitialAdListener methods
     @Override
     public void onInterstitialLoaded(MoPubInterstitial interstitial) {
-        // This sample automatically shows the ad as soon as it's loaded, but
-        // you can move this show call to a time more appropriate for your app.
         if (interstitial.isReady()) {
             interstitial.show();
         }
