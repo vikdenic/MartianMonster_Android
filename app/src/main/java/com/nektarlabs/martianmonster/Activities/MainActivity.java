@@ -21,7 +21,6 @@ import com.nektarlabs.martianmonster.R;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Timer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,9 +52,6 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.catImageView) ImageView catImageView;
     @Bind(R.id.ghostImageView) ImageView ghostImageView;
 
-    private Timer adTimer;
-    private boolean didShowAd = false;
-
     private MoPubInterstitial interstitial;
 
     //region Activity Lifecycle
@@ -70,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         interstitial.setInterstitialAdListener(this);
         interstitial.load();
 
-        setFontForOlderButtons();
+        setFontForButtons();
         setGifAsBackground();
         Log.i("ONCREATE: ", "just got called");
     }
@@ -78,10 +74,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("ONRESUME, ", "didShowAd: " + didShowAd);
-
-        if (didShowAd == false) {
-        }
         Log.i("ONRESUME: ", "just got called");
     }
 
@@ -96,11 +88,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-
-            if(adTimer != null) {
-                adTimer.cancel();
-                adTimer = null;
-            }
         Log.i("ONSTOP: ", "just got called");
     }
 
@@ -309,7 +296,7 @@ public class MainActivity extends AppCompatActivity
     //endregion
 
     //region Fonts
-    private void setFontForOlderButtons() {
+    private void setFontForButtons() {
         Typeface customTypeFace = Typeface.createFromAsset(getAssets(), getString(R.string.FONT_ORBITRON));
             for (View view : soundButtons)
             {
