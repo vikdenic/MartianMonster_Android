@@ -102,7 +102,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        interstitial.destroy();
+        if (interstitial != null) {
+            interstitial.destroy();
+        }
         super.onDestroy();
     }
     //endregion
@@ -350,6 +352,7 @@ public class MainActivity extends AppCompatActivity
         mSharedPreferences = getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
 
+        //Uncomment to reset sharedPreferences
 //        mEditor.clear();
 //        mEditor.apply();
 
