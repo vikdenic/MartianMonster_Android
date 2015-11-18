@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
 
         interstitial = new MoPubInterstitial(this, getString(R.string.mopub_fullscreen_unit_id));
         interstitial.setInterstitialAdListener(this);
-        interstitial.load();
+//        interstitial.load();
 
         setFontForOlderButtons();
         setGifAsBackground();
@@ -173,84 +173,98 @@ public class MainActivity extends AppCompatActivity
 
 
     //region Looped Background Tracks
-    @OnClick(R.id.rocketImageView)
-    public void onRocketImageViewClicked(View view) {
-        clearOtherLoops();
-        ImageView imageView = (ImageView) view;
-
-        imageView.clearAnimation();
-        animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
-        imageView.setAnimation(animScale);
-
-        if (mMediaPlayerLoop1 == null) {
-            imageView.setImageResource(R.mipmap.rocketcirclewhite);
-            imageView.startAnimation(animScale);
-
-            mMediaPlayerLoop1 = MediaPlayer.create(this, R.raw.martianmonsterloop);
-            mMediaPlayerLoop1.setLooping(true);
-            mMediaPlayerLoop1.start();
-        } else if (mMediaPlayerLoop1.isPlaying()) {
-            mMediaPlayerLoop1.pause();
-            imageView.setImageResource(R.mipmap.rocketcircle);
-            imageView.clearAnimation();
-        } else {
-            mMediaPlayerLoop1.start();
-            imageView.setImageResource(R.mipmap.rocketcirclewhite);
-            imageView.startAnimation(animScale);
+    @OnClick({R.id.rocketImageView, R.id.catImageView, R.id.ghostImageView})
+    public void onLoopedImageViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rocketImageView:
+                controlLoopedTracksOnSelection(view, R.mipmap.rocketcircle, R.mipmap.rocketcirclewhite, mMediaPlayerLoop1);
+                break;
+            case R.id.catImageView:
+                controlLoopedTracksOnSelection(view, R.mipmap.catcircle, R.mipmap.catcirclewhite, mMediaPlayerLoop2);
+                break;
+            case R.id.ghostImageView:
+                controlLoopedTracksOnSelection(view, R.mipmap.ghostcircle, R.mipmap.ghostcirclewhite, mMediaPlayerLoop3);
+                break;
+            default:
+                break;
         }
     }
 
-    @OnClick(R.id.catImageView)
-    public void onCatImageViewClicked(View view) {
-        clearOtherLoops();
+    private void controlLoopedTracksOnSelection(View view, int imageId, int imageWhiteId, MediaPlayer mediaPlayer) {
         ImageView imageView = (ImageView) view;
 
         imageView.clearAnimation();
         animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
         imageView.setAnimation(animScale);
 
-        if (mMediaPlayerLoop2 == null) {
-            imageView.setImageResource(R.mipmap.catcirclewhite);
-            imageView.startAnimation(animScale);
+        if (mediaPlayer != null) {
+            Log.d("MediaPlayerTest lp:", mediaPlayer.isLooping() + "");
+            Log.d("MediaPlayerTest pl:", mediaPlayer.isPlaying() + "");
+        }
 
-            mMediaPlayerLoop2 = MediaPlayer.create(this, R.raw.petcatloop);
-            mMediaPlayerLoop2.setLooping(true);
-            mMediaPlayerLoop2.start();
-        } else if (mMediaPlayerLoop2.isPlaying()) {
-            mMediaPlayerLoop2.pause();
-            imageView.setImageResource(R.mipmap.catcircle);
-            imageView.clearAnimation();
-        } else {
-            mMediaPlayerLoop2.start();
-            imageView.setImageResource(R.mipmap.catcirclewhite);
+        if (mediaPlayer == null) {
+            stopAllBgSongs();
+            imageView.setImageResource(imageWhiteId);
             imageView.startAnimation(animScale);
+            setUpMediaPlayerForLoop(view);
+            Log.d("MediaPlayerTest:", "1");
+        } else if (mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            imageView.setImageResource(imageId);
+            imageView.clearAnimation();
+            Log.d("MediaPlayerTest:", "2");
+        } else {
+            stopAllBgSongs();
+            mediaPlayer.start();
+            imageView.setImageResource(imageWhiteId);
+            imageView.startAnimation(animScale);
+            Log.d("MediaPlayerTest:", "3");
         }
     }
 
-    @OnClick(R.id.ghostImageView)
-    public void onGhostImageViewClicked(View view) {
-        clearOtherLoops();
-        ImageView imageView = (ImageView) view;
+    private void stopAllBgSongs() {
+        if (mMediaPlayerLoop1 != null) {
+            if (mMediaPlayerLoop1.isPlaying()) {
+                mMediaPlayerLoop1.pause();
+                rocketImageView.setImageResource(R.mipmap.rocketcircle);
+                rocketImageView.clearAnimation();
+            }
+        }
+        if (mMediaPlayerLoop2 != null) {
+            if (mMediaPlayerLoop2.isPlaying()) {
+                mMediaPlayerLoop2.pause();
+                catImageView.setImageResource(R.mipmap.catcircle);
+                catImageView.clearAnimation();
+            }
+        }
+        if (mMediaPlayerLoop3 != null) {
+            if (mMediaPlayerLoop3.isPlaying()) {
+                mMediaPlayerLoop3.pause();
+                ghostImageView.setImageResource(R.mipmap.ghostcircle);
+                ghostImageView.clearAnimation();
+            }
+        }
+    }
 
-        imageView.clearAnimation();
-        animScale = AnimationUtils.loadAnimation(this, R.anim.anim_scale);
-        imageView.setAnimation(animScale);
-
-        if (mMediaPlayerLoop3 == null) {
-            imageView.setImageResource(R.mipmap.ghostcirclewhite);
-            imageView.startAnimation(animScale);
-
-            mMediaPlayerLoop3 = MediaPlayer.create(this, R.raw.ghostloop);
-            mMediaPlayerLoop3.setLooping(true);
-            mMediaPlayerLoop3.start();
-        } else if (mMediaPlayerLoop3.isPlaying()) {
-            mMediaPlayerLoop3.pause();
-            imageView.setImageResource(R.mipmap.ghostcircle);
-            imageView.clearAnimation();
-        } else {
-            mMediaPlayerLoop3.start();
-            imageView.setImageResource(R.mipmap.ghostcirclewhite);
-            imageView.startAnimation(animScale);
+    private void setUpMediaPlayerForLoop(View view) {
+        switch (view.getId()) {
+            case R.id.rocketImageView:
+                mMediaPlayerLoop1 = MediaPlayer.create(this, R.raw.martianmonsterloop);
+                mMediaPlayerLoop1.setLooping(true);
+                mMediaPlayerLoop1.start();
+                break;
+            case R.id.catImageView:
+                mMediaPlayerLoop2 = MediaPlayer.create(this, R.raw.petcatloop);
+                mMediaPlayerLoop2.setLooping(true);
+                mMediaPlayerLoop2.start();
+                break;
+            case R.id.ghostImageView:
+                mMediaPlayerLoop3 = MediaPlayer.create(this, R.raw.ghostloop);
+                mMediaPlayerLoop3.setLooping(true);
+                mMediaPlayerLoop3.start();
+                break;
+            default:
+                break;
         }
     }
 
